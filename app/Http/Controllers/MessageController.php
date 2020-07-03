@@ -6,21 +6,21 @@ use Illuminate\Http\Request;
 use App\Models\Message;
 use Validator; 
 
-class HomeController extends Controller
+class MessageController extends Controller
 {
-	public function index()
-	{
+    public function index()
+    {
 
-		$data = array('title' => 'Гостевая книга',
-					  'pagetitle'  => 'Гостевая книга',
-					  'messages' => Message::latest()->get()
-					);
-	
-    	return view('pages.index',$data);
-	}
+        $data = array('title' => 'Гостевая книга',
+                      'pagetitle'  => 'Гостевая книга',
+                      'messages' => Message::latest()->get()
+                    );
+    
+        return view('pages.index',$data);
+    }
 
-	public function store(Request $request) 
-	{
+    public function store(Request $request) 
+    {
         // Данные отправленные через форму
         $input = $request->all();
 
@@ -73,5 +73,5 @@ class HomeController extends Controller
         return redirect()
                         ->route('messages')
                         ->with('sessionMessage', 'Запись удалена.');
-    }	
+    }   
 }

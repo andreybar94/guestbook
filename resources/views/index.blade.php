@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="text-center">{{ isset($pagetitle) ? $pagetitle : 'Гостевая книга' }}</h1>
+    <h1 class="text-center mt-3">{{ isset($pagetitle) ? $pagetitle : 'Гостевая книга' }}</h1>
     
     @yield('content')
 

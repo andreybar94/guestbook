@@ -32,19 +32,19 @@
         </div>
     </form>
         <div class="messages">
-			@if( ! $messages->isEmpty())
-                @foreach ($messages as $message)	
-        			<div class="card">
-        			  <div class="card-header d-flex justify-content-between flex-wrap">
-        			    <span>{!! $message->username !!}</span>
-                        <span>{!! $message->created_at !!}</span>
-        			  </div>
-        			  <div class="card-body">
-        			    <p class="card-text">
-        			    	{!! $message->message !!}</p>
-        			    @include('pages.parts.deleteButtonConfirmation')
-        			  </div>
-        			</div>
+            @if( ! $messages->isEmpty())
+                @foreach ($messages as $message)    
+                    <div class="card  mb-3">
+                      <div class="card-header d-flex justify-content-between flex-wrap">
+                        <span>{{ $message->username }}</span>
+                        <span>{{ $message->created_at }}</span>
+                      </div>
+                      <div class="card-body">
+                        <p class="card-text">
+                            {{ $message->message }}</p>
+                        @include('pages.parts.deleteButtonConfirmation')
+                      </div>
+                    </div>
                 @endforeach
             @endif
         </div>
