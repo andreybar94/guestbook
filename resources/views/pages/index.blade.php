@@ -1,31 +1,51 @@
 @extends('index')
 
     @section('content')
-    <form method="POST" id="id-form_messages">
+    <form action="{{ route('messages.store') }}" method="POST" id="id-form_messages">
+        
+    @if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
+    @if (session('sessionMessage'))
+    <div class="alert alert-success" role="alert">
+        {{ session('sessionMessage') }}
+    </div>
+    @endif
+
+
+    @csrf
         <div class="form-group">
             <label for="message">Сообщение: *</label>
             <textarea class="form-control" rows="5" placeholder="Текст сообщения" name="message" cols="50"
-                      id="message"></textarea>
+                      id="message">{{ old('message') }}</textarea>
         </div>
 
         <div class="form-group">
             <input class="btn btn-primary" type="submit" value="Добавить">
         </div>
-
-        <div class="messages">
-				
-			<div class="card">
-			  <div class="card-header d-flex justify-content-between flex-wrap">
-			    <span>Username</span>
-                <span>17:15:00 / 03.07.2016</span>
-			  </div>
-			  <div class="card-body">
-			    <p class="card-text">
-			    	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt, iste nostrum blanditiis, cupiditate laborum fuga quisquam quas praesentium veritatis architecto recusandae, similique cumque sed illo beatae consequatur delectus vel reprehenderit.</p>
-			    <button type="button" class="btn btn-danger">Удалить</button>
-			  </div>
-			</div>
-        </div>
     </form>
+        <div class="messages">
+			@if( ! $messages->isEmpty())
+                @foreach ($messages as $message)	
+        			<div class="card">
+        			  <div class="card-header d-flex justify-content-between flex-wrap">
+        			    <span>{!! $message->username !!}</span>
+                        <span>{!! $message->created_at !!}</span>
+        			  </div>
+        			  <div class="card-body">
+        			    <p class="card-text">
+        			    	{!! $message->message !!}</p>
+        			    @include('pages.parts.deleteButtonConfirmation')
+        			  </div>
+        			</div>
+                @endforeach
+            @endif
+        </div>
     @stop

@@ -17,4 +17,8 @@ Route::get('/', function () {
 });
 */
 	
-Route::any('/', ['uses' => 'HomeController@index', 'as' => 'home']);
+Route::get('/', 'HomeController@index')->name('messages');
+// "Ресурсный маршрутизатор" для MessageController
+Route::resource('messages', 'HomeController', ['only' => [
+    'index', 'store','destroy'
+]]);
