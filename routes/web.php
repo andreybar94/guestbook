@@ -17,8 +17,11 @@ Route::get('/', function () {
 });
 */
 	
-Route::get('/', 'MessageController@index')->name('messages');
+Route::get('/', 'MessageController@index')->name('messages')->middleware('auth');
 // "CRUD маршрутизатор" для MessageController
 Route::resource('messages', 'MessageController', ['only' => [
     'index', 'store','destroy'
 ]]);
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

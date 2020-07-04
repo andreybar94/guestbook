@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Message;
+use App\User;
 use Validator; 
 
 class MessageController extends Controller
 {
     public function index()
     {
-
+        //dd(Message::latest()->paginate(5));
         $data = array('title' => 'Гостевая книга',
                       'pagetitle'  => 'Гостевая книга',
-                      'messages' => Message::latest()->get()
+                      'messages' => Message::latest()->paginate(5),
                     );
     
         return view('pages.index',$data);
@@ -32,7 +34,10 @@ class MessageController extends Controller
         } 
         $message = new Message();
 
-        $message->username = 'name';
+        //Получаем id авторизованного пользователя
+        $userId = Auth::user()->id; 
+        
+        $message->user_id = $userId;
         $message->message = $input['message'];
 
         if ($message->save()) {
