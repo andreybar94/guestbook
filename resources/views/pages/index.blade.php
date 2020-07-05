@@ -1,6 +1,8 @@
 @extends('layouts.app')
     
     @section('content')
+
+
     <div class="container">
         <h1 class="text-center mt-3">{{ isset($pagetitle) ? $pagetitle : 'Гостевая книга' }}</h1>
 
@@ -31,7 +33,7 @@
             </div>
 
             <div class="form-group">
-                <input class="btn btn-primary" type="submit" value="Добавить">
+                <input class="btn btn-primary g-recaptcha" type="submit" value="Добавить" data-sitekey="6Legs60ZAAAAANLwGdPO4OGWK735wnlPRToZvnJS" data-callback="onSubmit">
             </div>
         </form>
         <div class="messages">
@@ -57,4 +59,10 @@
             @endif
         </div>
     </div>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+    function onSubmit(token) {
+      document.getElementById("id-form_messages").submit();
+    }
+    </script>
     @stop

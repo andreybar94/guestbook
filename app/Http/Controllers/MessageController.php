@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Message;
 use App\User;
-use Validator; 
+use Validator;
+use GuzzleHttp\Client; 
 
 class MessageController extends Controller
 {
@@ -25,13 +26,18 @@ class MessageController extends Controller
     {
         // Данные отправленные через форму
         $input = $request->all();
-
         $validationResult = $this->_validation($input);
-
 
         if (!is_null($validationResult)) {
             return $validationResult;
         } 
+        if (!$this->checkRecaptcha($input['g-recaptcha-response'], $request->ip())) {
+                        return redirect()
+                            ->route('messages')
+                            ->withErrors('Капча недействительна.')
+                            ->withInput(); // Даннные, которые вводили
+        }    
+
         $message = new Message();
 
         //Получаем id авторизованного пользователя
@@ -70,6 +76,19 @@ class MessageController extends Controller
         }
         // Проверка пройдена
         return NULL;
+    }
+
+    private function checkRecaptcha($token, $ip)
+    {
+        $response = (new Client)->post('https://www.google.com/recaptcha/api/siteverify', [
+            'form_params' => [
+                'secret'   => config('recaptcha.secret'),
+                'response' => $token,
+                'remoteip' => $ip,
+            ],
+        ]);
+        $response = json_decode((string)$response->getBody(), true);
+        return $response['success'];
     }
 
     public function destroy(Message $message)
