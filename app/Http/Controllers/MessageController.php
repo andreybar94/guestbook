@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Message;
+use App\Message;
 use App\User;
 use Validator;
 use GuzzleHttp\Client; 
@@ -13,7 +13,6 @@ class MessageController extends Controller
 {
     public function index()
     {
-        //dd(Message::latest()->paginate(5));
         $data = array('title' => 'Гостевая книга',
                       'pagetitle'  => 'Гостевая книга',
                       'messages' => Message::latest()->paginate(5),
@@ -57,17 +56,12 @@ class MessageController extends Controller
 
     private function _validation($input) 
     {
-        $validatorErrorMessages = array(
-            'required' => 'Поле :attribute обязательно к заполнению',
-        );
-
         // Осуществляем проверку данных
         $validator = Validator::make(
                         $input, 
                         array(
                             'message' => 'required',
-                        ),
-                        $validatorErrorMessages);
+                        ));
         if ($validator->fails()) {
             // Проверка не пройдена
             return redirect(route('messages'))

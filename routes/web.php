@@ -23,5 +23,3 @@ Route::resource('messages', 'MessageController', ['only' => [
     'index', 'store','destroy'
 ]]);
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
